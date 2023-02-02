@@ -1,0 +1,18 @@
+.header__logo {
+  margin-top: 5px;
+}
+
+@media screen and (max-width: 934px) {
+  .header__logo {
+    margin-left: calc((934px - 100vw) / 2);
+  }
+}
+
+@media screen and (max-width: 880px) {
+  .header__logo {
+    object-fit: cover;
+    margin-top: 0;
+    margin-left: 27px;
+    max-width: 32.4%;
+  }
+}

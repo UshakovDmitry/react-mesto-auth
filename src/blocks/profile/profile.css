@@ -1,0 +1,13 @@
+.profile {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  justify-items: start;
+  align-items: center;
+}
+
+@media screen and (max-width: 880px) {
+  .profile {
+    grid-template: repeat(3, auto)/1fr;
+    justify-items: center;
+  }
+}
