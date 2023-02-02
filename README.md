@@ -5,10 +5,12 @@
 Работа портирована с ванильного JavaScript на React JS.
 
 ## Функциональность
+* Авторизация и регистрация пользователей
 * Добавление и удаление карточки с изображением
 * Возможность поставить карточке лайк и убрать его
 * Редактирование профиля пользователя
 * Данные хранятся на сервере и загружаются с сервера
+* Валидация форм на стороне клиента
 
 ## Технологический стек
 * Flexbox
@@ -22,10 +24,15 @@
 * React JS
 * Сборка Webpack
 * Git
+* Client-side form validation (custom hook)
+
+## Будущая доработка проекта будет включать в себя
+* Cоздание сервера на Node.js
+
 
 ## Инструкция по установке
 ```
-git clone git@github.com:UshakovDmitry/mesto-react.git
+git clone git@github.com:UshakovDmitry/mesto-react-auth.git
 cd mesto-react
 npm install
 npm start
@@ -34,7 +41,6 @@ npm start
 ## Деплой проекта на Github Pages
 ```
 npm run deploy
-
 ```
 
 * [Демо проекта на Github Pages](https://ushakovdmitry.github.io/react-mesto-auth/)
