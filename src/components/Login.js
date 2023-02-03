@@ -18,11 +18,11 @@ const Login = () => {
     
     }
     
-    const hsndleChangeEmail = () => {
+    const handleChangeEmail = () => {
         setIsEmail
     }
     
-    const hsndleChangePassword = () => {
+    const handleChangePassword = () => {
         setIsPassword
     }
 
@@ -45,7 +45,7 @@ const Login = () => {
             minLength="2"
             maxLength="40"
             value={isEmail}
-            onChange={hsndleChangeEmail}
+            onChange={handleChangeEmail}
             required
           />
           <span className="form__input-error form__input-error_place_name"></span>
@@ -57,7 +57,7 @@ const Login = () => {
             minLength="2"
             maxLength="200"
             value={isPassword}
-            onChange={hsndleChangePassword}
+            onChange={handleChangePassword}
             required
           />
           <span className="form__input-error form__input-error_place_about"></span>
