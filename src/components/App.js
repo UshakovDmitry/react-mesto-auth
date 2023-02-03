@@ -118,15 +118,12 @@ export default function App() {
   const handleEditAvatarClick = () => {
     setEditAvatarPopup((isEditAvatarPopupOpen) => !isEditAvatarPopupOpen);
   };
-
   const handleEditProfileClick = () => {
     setEditProfilePopup((isEditProfilePopupOpen) => !isEditProfilePopupOpen);
   };
-
   const handleAddPlaceClick = () => {
     setAddPlacePopup((isAddPlacePopupOpen) => !isAddPlacePopupOpen);
   };
-
   const handleCardClick = (card) => {
     setSelectedCard(card);
   };
