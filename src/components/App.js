@@ -1,7 +1,11 @@
-import {Routes}
+import {Routes, Route, Link} from 'react-router-dom'
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup.js";
+
+import Register from './Register';
+import Login   from './Login';
+
 import ImagePopup from "./ImagePopup.js";
 import React from "react";
 import "../index.css";
@@ -142,6 +146,9 @@ export default function App() {
       <div className="root">
         <div className="page">
           <Header />
+          <Routes>
+            <Route path='/sign-up' element={<Register />} />
+            <Route path='/sign-in' element={<Login />} />
           <Main
             cards={cards}
             onEditAvatar={handleEditAvatarClick}
@@ -151,6 +158,7 @@ export default function App() {
             onCardDelete={handleCardDelete}
             onCardLike={handleCardLike}
           />
+          </Routes>
           <Footer />
         </div>
 
