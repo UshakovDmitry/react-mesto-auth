@@ -13,16 +13,16 @@ const [isPassword, setIsPassword] = useState("")
 
 
 
-const handleSubmit = () => {
+// const handleSubmit = () => {
 
-}
+// }
 
 const hsndleChangeEmail = () => {
-    setIsEmail
+    setIsEmail("")
 }
 
 const hsndleChangePassword = () => {
-    setIsPassword
+    setIsPassword("")
 }
 
 
@@ -35,7 +35,7 @@ const hsndleChangePassword = () => {
 
       <PopupWithForm 
       title="Регистрация"
-      onSubmit={handleSubmit}
+    //   onSubmit={handleSubmit}
       buttonText="Регистрация"
       children={
         <>

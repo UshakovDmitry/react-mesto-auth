@@ -14,16 +14,16 @@ const Login = () => {
     
     
     
-    const handleSubmit = () => {
+    // const handleSubmit = () => {
     
-    }
+    // }
     
     const handleChangeEmail = () => {
-        setIsEmail
+        setIsEmail("")
     }
     
     const handleChangePassword = () => {
-        setIsPassword
+        setIsPassword("")
     }
 
   return (
@@ -34,7 +34,7 @@ const Login = () => {
       title="Вход"
       buttonText="Войти"
 
-      onSubmit={handleSubmit}
+    //   onSubmit={handleSubmit}
       children={
         <>
           <input
