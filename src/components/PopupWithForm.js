@@ -21,10 +21,10 @@ export default function PopupWithForm(props) {
           <button
             className="form__submit-button"
             type="submit"
-            // disabled
-          >
+            >
             {props.buttonText ? props.buttonText : "Сохранить"}
-          </button>
+            </button>
+            
         </form>
 
         <button
