@@ -1,7 +1,7 @@
 {
   "name": "react-mesto-auth",
   "author": "Dmitry Ushakov",
-  "homepage": "https://ushakovdmitry.github.io/react-mesto-auth",
+  "homepage": "https://ushakovdmitry.github.io/react-mesto-auth/",
   "version": "0.1.0",
   "private": false,
   "dependencies": {

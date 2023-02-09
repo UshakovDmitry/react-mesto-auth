@@ -9,17 +9,15 @@ const useForm = () => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
+  
     setIsValues({
       ...isValues,
-      [name]: value,
+      [e.target.name]: e.target.value,
     });
 
     setIsErrors({
       ...isErrors,
-      [name]: e.target.validationMessage,
+      [e.target.name]: e.target.validationMessage,
     });
 
     setIsFormValid(e.target.closest(".form").checkValidity());
