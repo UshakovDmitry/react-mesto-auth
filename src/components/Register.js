@@ -1,72 +1,41 @@
+import { Link } from "react-router-dom";
+import "../";
 
-
-
-import Header from "./Header";
-import PopupWithForm from "./PopupWithForm";
-
-import React, {useState} from "react";
+import React from "react";
 
 const Register = () => {
-
-const [isEmail, setIsEmail] = useState("")
-const [isPassword, setIsPassword] = useState("")
-
-
-
-// const handleSubmit = () => {
-
-// }
-
-const hsndleChangeEmail = () => {
-    setIsEmail("")
-}
-
-const hsndleChangePassword = () => {
-    setIsPassword("")
-}
-
 
 
   return (
     <>
-      <Header 
-        // button={}
-      />
-
-      <PopupWithForm 
-      title="Регистрация"
-    //   onSubmit={handleSubmit}
-      buttonText="Регистрация"
-      children={
-        <>
+      <div className="auth">
+        <h2 className="auth__title">Регистрация</h2>
+        <form className="form auth__form">
           <input
-            className="form__input"
+            id="email"
+            name="email"
             type="email"
             placeholder="Email"
-            name="name"
-            minLength="2"
-            maxLength="40"
-            value={isEmail}
-            onChange={hsndleChangeEmail}
+            autoComplete="email"
             required
           />
-          <span className="form__input-error form__input-error_place_name"></span>
+          <span className="auth__error"></span>
           <input
-            className="form__input"
+            id="password"
+            name="password"
             type="password"
             placeholder="Пароль"
-            name="about"
-            minLength="2"
-            maxLength="200"
-            value={isPassword}
-            onChange={hsndleChangePassword}
+            autoComplete="password"
+        
             required
           />
-          <span className="form__input-error form__input-error_place_about"></span>
-        </>
-      }
-      
-       />
+          <span className="auth__error"></span>
+          <button type="submit">Зарегистрироваться</button>
+        </form>
+        <Link to="/sign-in" className="auth__login-hint">
+          Уже зарегистрированы? Войти
+        </Link>
+      </div>
     </>
   );
 };

@@ -1,11 +1,11 @@
-import {Routes, Route} from 'react-router-dom'
+import { Routes, Route } from "react-router-dom";
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup.js";
 
-import Register from './Register';
-import Login   from './Login';
-import ProtectedRoute from './ProtectedRoute';
+import Register from "./Register";
+import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
 
 import ImagePopup from "./ImagePopup.js";
 import React from "react";
@@ -18,9 +18,6 @@ import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 import api from "../utils/Api";
 
 export default function App() {
-
-  // const navigate = useNavigate();
-
   // STATES
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -28,11 +25,8 @@ export default function App() {
   const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopup] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
-  // const [loggedIn, setLoggedIn] = useState(false);
 
   // EFFECTS
-
-  // Получаем информацию о пользователе при первом рендере
 
   React.useEffect(() => {
     api
@@ -150,55 +144,30 @@ export default function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="page">
-
           <Header />
 
           <Routes>
-
-          <Route 
-            path='/' 
-            element={<ProtectedRoute 
-            // loggedIn={loggedIn}
-            component={Main} 
-            cards={cards}
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardDelete={handleCardDelete}
-            onCardLike={handleCardLike}
-            />}
+            <Route path="/sign-up" element={<Register />} />
+            <Route path="/sign-in" element={<Login />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute
+                  component={Main}
+                  cards={cards}
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onCardClick={handleCardClick}
+                  onCardDelete={handleCardDelete}
+                  onCardLike={handleCardLike}
+                />
+              }
             />
-
-
-            <Route 
-              path='/sign-up'
-              element={<Register />} 
-              />
-
-            <Route 
-              path='/sign-in'
-              element={<Login />}
-              />
-
-            <Route 
-              path="*"
-              // element={loggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />}
-              />
-
           </Routes>
 
           <Footer />
         </div>
-
-
-
-
-
-
-
-
-
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}

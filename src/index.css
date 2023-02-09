@@ -46,3 +46,10 @@
 @import url(./blocks/full-image/full-image.css);
 @import url(./blocks/full-image/__image/full-image__image.css);
 @import url(./blocks/full-image/__caption/full-image__caption.css);
+@import url(./blocks/auth/auth.css);
+@import url(./blocks/auth/__form/auth__form.css); 
+@import url(./blocks/auth/__title/auth__title.css);
+@import url(./blocks/auth/__error/auth__error.css);  
+@import url(./blocks/auth/__login-hint/auth__login-hint.css); 
+    
+
