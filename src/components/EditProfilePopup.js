@@ -52,7 +52,7 @@ const EditProfilePopup = (props) => {
             name="name"
             minLength="2"
             maxLength="40"
-            value={name}
+            value={name || ""}
             onChange={handleChangeName}
             required
           />
@@ -64,7 +64,7 @@ const EditProfilePopup = (props) => {
             name="about"
             minLength="2"
             maxLength="200"
-            value={description}
+            value={description || ""}
             onChange={handleChangeDescription}
             required
           />

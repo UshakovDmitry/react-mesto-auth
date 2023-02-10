@@ -19,7 +19,7 @@ const handleSubmit = (e) => {
     <div className="auth">
       <h2 className="auth__title">Вход</h2>
       <form className="form auth__form"
-       onClick={handleSubmit} 
+       onSubmit={handleSubmit} 
        noValidate>
         <input
           type="email"

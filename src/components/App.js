@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup.js";
@@ -9,7 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
 
 import ImagePopup from "./ImagePopup.js";
-import React from "react";
+import React, { useState } from "react";
 import "../index.css";
 import Header from "./Header.js";
 import Main from "./Main.js";
@@ -17,19 +17,21 @@ import Footer from "./Footer.js";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 
 import api from "../utils/Api";
-import * as auth from '../utils/auth';
+import * as auth from "../utils/auth";
 
 export default function App() {
+  const navigate = useNavigate();
   // STATES
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([]);
-  const [isEditAvatarPopupOpen, setEditAvatarPopup] = React.useState(false);
-  const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopup] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
-  const [isRegistrationStatus, setisRegistrationStatus] = React.useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
+  const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
+  const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopup] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isRegistrationStatus, setisRegistrationStatus] = useState(false);
+  const [authorizationEmail, setAuthorizationEmail] = useState("");
 
   // EFFECTS
 
@@ -55,7 +57,7 @@ export default function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
-  }, [cards]);
+  }, []);
 
   //
 
@@ -136,10 +138,6 @@ export default function App() {
     setSelectedCard(card);
   };
 
-  // const openInfoTooltip = () => {
-  //   setIsInfoTooltipOpen((isInfoTooltipOpen) => !isInfoTooltipOpen);
-  // };
-
   // Функция закрытия всех попапов
 
   const closeAllPopups = () => {
@@ -147,45 +145,96 @@ export default function App() {
     setEditAvatarPopup(false);
     setEditProfilePopup(false);
     setSelectedCard({});
-    setIsInfoTooltipOpen((prev) => !prev)
+    setIsInfoTooltipOpen((prev) => !prev);
   };
 
-  // REGISTER AND LOGIN //
+  //  REGISTER API CALL //
   //____________________//
 
   const handleRegistration = (data) => {
-    return auth.register(data)
-      .then((data) => {
-        setisRegistrationStatus(true);
+    return auth
+      .register(data)
+      .then(() => {
+        setisRegistrationStatus((prev) => !prev);
         setIsInfoTooltipOpen((prev) => !prev);
-        // history.push("/sign-in");
+        navigate("/sign-in");
       })
       .catch((err) => {
         console.log(err);
-        setisRegistrationStatus(false);
+        setisRegistrationStatus((prev) => !prev);
         setIsInfoTooltipOpen((prev) => !prev);
       });
   };
 
+  //   LOGIN API CALL   //
+  //____________________//
+
   const handleAuthorization = (data) => {
-    return auth.authorize(data)
+    return auth
+      .authorize(data)
       .then((data) => {
-        setIsLoggedIn((isLoggedIn) => !isLoggedIn);
+        setIsLoggedIn((prev) => !prev);
         localStorage.setItem("jwt", data.token);
-        // handleTokenCheck();
-        // history.push("/");
+        handleTokenCheck();
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
         setIsInfoTooltipOpen((prev) => !prev);
       });
+  };
+
+  //    TOCKEN CHECK    //
+  //____________________//
+
+  const handleTokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      return;
+    }
+    auth
+      .getContent(jwt)
+      .then((data) => {
+        setAuthorizationEmail(data.email);
+        setCurrentUser(data);
+        setIsLoggedIn((prev) => !prev);
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
+    api
+      .getInitialCards(jwt)
+      .then((initialCards) => {
+        setCards(initialCards);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
+
+  //     SIGN OUT     //
+  //__________________//
+
+  const handleSignOut = () => {
+    localStorage.removeItem("jwt");
+    navigate("/sign-in");
+    setIsLoggedIn(false);
+    setCurrentUser({});
+    setAuthorizationEmail("");
   };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="page">
-          <Header loggedIn={isLoggedIn} />
+          <Header
+            loggedIn={isLoggedIn}
+            userEmail={authorizationEmail}
+            onSignOut={handleSignOut}
+          />
 
           <Routes>
             <Route
@@ -212,6 +261,11 @@ export default function App() {
                   onCardDelete={handleCardDelete}
                   onCardLike={handleCardLike}
                 />
+              }
+            />
+            <Route
+              path="*"
+              element={isLoggedIn ? <Navigate to="/" /> : <Navigate to="/sign-up" />
               }
             />
           </Routes>

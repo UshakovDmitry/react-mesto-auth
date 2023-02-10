@@ -17,7 +17,11 @@ const Register = (props) => {
     <>
       <div className="auth">
         <h2 className="auth__title">Регистрация</h2>
-        <form className="form auth__form" onClick={handleSubmit}>
+        
+        <form 
+        className="form auth__form"
+        onSubmit={handleSubmit}>
+
           <input
             id="email"
             name="email"
