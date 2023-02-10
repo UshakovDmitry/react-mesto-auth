@@ -3,3 +3,12 @@ export const renderLoading = (button, callback, loadingText = "Добавлен�
   button.textContent = loadingText;
   return callback().finally(() => (button.textContent = defaultText));
 };
+
+
+export const checkResponse = (res) =>
+res.ok
+  ? res.json()
+  : Promise.reject(`Ошибка: ${res.status}`);
+
+
+  export const BASE_URL = 'https://auth.nomoreparties.co';
