@@ -1,40 +1,29 @@
-import { checkResponse, BASE_URL } from './Utils';
-
-const BASE_URL = 'https://auth.nomoreparties.co';
+import { checkResponse, BASE_URL } from "./Utils";
 
 const headers = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
+  Accept: "application/json",
+  "Content-Type": "application/json",
 };
-
-
 
 export const register = ({ email, password }) => {
   return fetch(`${BASE_URL}/signup`, {
-    method: 'POST',
-    credentials: 'include',
+    method: "POST",
     headers,
     body: JSON.stringify({ email, password }),
   }).then((res) => checkResponse(res));
 };
-
-
 
 export const authorize = ({ email, password }) => {
   return fetch(`${BASE_URL}/signin`, {
-    method: 'POST',
-    credentials: 'include',
+    method: "POST",
     headers,
     body: JSON.stringify({ email, password }),
   }).then((res) => checkResponse(res));
 };
 
-
-
 export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
-    credentials: 'include',
+    method: "GET",
     headers: {
       ...headers,
       authorization: `Bearer ${token}`,

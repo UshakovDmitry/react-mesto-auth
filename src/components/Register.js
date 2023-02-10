@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import useForm from "./hooks/useForm";
 
+
 import React from "react";
 
 const Register = (props) => {
   const { isValues, isErrors, handleChange } = useForm();
+
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -51,5 +51,9 @@
 @import url(./blocks/auth/__title/auth__title.css);
 @import url(./blocks/auth/__error/auth__error.css);  
 @import url(./blocks/auth/__login-hint/auth__login-hint.css); 
+@import url(./blocks/popup/__signup-icon/popup__signup-icon.css);
+@import url(./blocks/popup/__signup-title/popup__signup-title.css);
+@import url(./blocks/popup/__container/popup__container.css);
+@import url(./blocks/popup/__close/popup__close.css);
     
 

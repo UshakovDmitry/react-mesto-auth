@@ -6,6 +6,7 @@ import AddPlacePopup from "./AddPlacePopup.js";
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
 
 import ImagePopup from "./ImagePopup.js";
 import React from "react";
@@ -16,6 +17,7 @@ import Footer from "./Footer.js";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 
 import api from "../utils/Api";
+import * as auth from '../utils/auth';
 
 export default function App() {
   // STATES
@@ -25,6 +27,9 @@ export default function App() {
   const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopup] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+  const [isRegistrationStatus, setisRegistrationStatus] = React.useState(false);
 
   // EFFECTS
 
@@ -131,6 +136,10 @@ export default function App() {
     setSelectedCard(card);
   };
 
+  // const openInfoTooltip = () => {
+  //   setIsInfoTooltipOpen((isInfoTooltipOpen) => !isInfoTooltipOpen);
+  // };
+
   // Функция закрытия всех попапов
 
   const closeAllPopups = () => {
@@ -138,22 +147,63 @@ export default function App() {
     setEditAvatarPopup(false);
     setEditProfilePopup(false);
     setSelectedCard({});
+    setIsInfoTooltipOpen((prev) => !prev)
+  };
+
+  // REGISTER AND LOGIN //
+  //____________________//
+
+  const handleRegistration = (data) => {
+    return auth.register(data)
+      .then((data) => {
+        setisRegistrationStatus(true);
+        setIsInfoTooltipOpen((prev) => !prev);
+        // history.push("/sign-in");
+      })
+      .catch((err) => {
+        console.log(err);
+        setisRegistrationStatus(false);
+        setIsInfoTooltipOpen((prev) => !prev);
+      });
+  };
+
+  const handleAuthorization = (data) => {
+    return auth.authorize(data)
+      .then((data) => {
+        setIsLoggedIn((isLoggedIn) => !isLoggedIn);
+        localStorage.setItem("jwt", data.token);
+        // handleTokenCheck();
+        // history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsInfoTooltipOpen((prev) => !prev);
+      });
   };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="page">
-          <Header />
+          <Header loggedIn={isLoggedIn} />
 
           <Routes>
-            <Route path="/sign-up" element={<Register />} />
-            <Route path="/sign-in" element={<Login />} />
+            <Route
+              path="/sign-up"
+              element={<Register onRegister={handleRegistration} />}
+            />
+
+            <Route
+              path="/sign-in"
+              element={<Login onLogin={handleAuthorization} />}
+            />
+
             <Route
               path="/"
               element={
                 <ProtectedRoute
                   component={Main}
+                  loggedIn={isLoggedIn}
                   cards={cards}
                   onEditAvatar={handleEditAvatarClick}
                   onEditProfile={handleEditProfileClick}
@@ -185,6 +235,12 @@ export default function App() {
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
+        />
+
+        <InfoTooltip
+          onClose={closeAllPopups}
+          isOpen={isInfoTooltipOpen}
+          isSuccess={isRegistrationStatus}
         />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />

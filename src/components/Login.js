@@ -2,24 +2,24 @@
 import useForm from './hooks/useForm';
 
 
-const Login = () => {
+const Login = (props) => {
 
 const {isValues, isErrors, handleChange} = useForm({});
 
 
-// const handleSubmit = (e) => {
-//   e.preventDefault();
-//   if (!isValues.email || !isValues.password) {
-//     return;
-//   }
-//   onLogin(isValues);
-// };
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (!isValues.email || !isValues.password) {
+    return;
+  }
+  props.onLogin(isValues);
+};
 
   return (
     <div className="auth">
       <h2 className="auth__title">Вход</h2>
       <form className="form auth__form"
-      //  onClick={handleSubmit} 
+       onClick={handleSubmit} 
        noValidate>
         <input
           type="email"
