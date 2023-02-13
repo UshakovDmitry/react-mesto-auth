@@ -1,32 +1,35 @@
-import { checkResponse, BASE_URL } from "./Utils";
+import { checkResponse, AUTH_URL } from "./Utils";
 
 const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",
 };
 
-export const register = ({ email, password }) => {
-  return fetch(`${BASE_URL}/signup`, {
+export const register = async ({ email, password }) => {
+  const res = await fetch(`${AUTH_URL}/signup`, {
     method: "POST",
     headers,
     body: JSON.stringify({ email, password }),
-  }).then((res) => checkResponse(res));
+  })
+  return checkResponse(res);
 };
 
-export const authorize = ({ email, password }) => {
-  return fetch(`${BASE_URL}/signin`, {
+export const authorize = async ({ email, password }) => {
+  const res = await fetch(`${AUTH_URL}/signin`, {
     method: "POST",
     headers,
     body: JSON.stringify({ email, password }),
-  }).then((res) => checkResponse(res));
+  })
+   return checkResponse(res);
 };
 
-export const getContent = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
+export const getContent = async (token) => {
+  const res = await fetch(`${AUTH_URL}/users/me`, {
     method: "GET",
     headers: {
       ...headers,
       authorization: `Bearer ${token}`,
     },
-  }).then((res) => checkResponse(res));
+  });
+   return checkResponse(res);
 };

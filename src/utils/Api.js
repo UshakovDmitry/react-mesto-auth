@@ -1,79 +1,92 @@
-import { checkResponse } from './Utils';
+import { checkResponse } from "./Utils";
+
+
 
 
 class Api {
-  constructor(settings) {
-    this._address = settings.address;
-    this._headers = settings.headers;
+  constructor(options) {
+    this.headers = options.headers;
+    this._baseUrl = options.baseUrl;
   }
 
-  // _responseHandler = (response) =>
-  //   response.ok
-  //     ? response.json()
-  //     : Promise.reject(`Ошибка: ${response.status}`);
-
-  getUserInfo = () =>
-    fetch(`${this._address}users/me`, {
+  getUserInfo = async () => {
+    const res = await fetch(`${this._baseUrl}users/me`, {
       method: "GET",
-      headers: this._headers,
-    }).then(checkResponse);
-
-  getDefaultCards = () =>
-    fetch(`${this._address}cards`, {
-      method: "GET",
-      headers: this._headers,
-    }).then(checkResponse);
-
-  editUserData = (newData) =>
-    fetch(`${this._address}users/me`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify(newData),
-    }).then(checkResponse);
-
-  setUserAvatar = (link) =>
-    fetch(`${this._address}users/me/avatar`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify(link),
-    }).then(checkResponse);
-
-  addCard = (card) =>
-    fetch(`${this._address}cards`, {
-      method: "POST",
-      headers: this._headers,
-      body: JSON.stringify(card),
-    }).then(checkResponse);
-
-  setLike = (cardId) =>
-    fetch(`${this._address}cards/${cardId}/likes`, {
-      method: "PUT",
-      headers: this._headers,
-    }).then(checkResponse);
-
-  deleteLike = (cardId) =>
-    fetch(`${this._address}cards/${cardId}/likes`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then(checkResponse);
-
-  // like/dislike
-  toggleLike = (cardId, isLiked) => {
-    return fetch(`${this._address}/cards/${cardId}/likes`, {
-      method: `${!isLiked ? "DELETE" : "PUT"}`,
-      headers: this._headers,
-    }).then(checkResponse);
+      headers: this.headers,
+    });
+    return checkResponse(res);
   };
 
-  deleteCard = (id) =>
-    fetch(`${this._address}cards/${id}`, {
+  getDefaultCards = async () => {
+    const res = await fetch(`${this._baseUrl}cards`, {
+      method: "GET",
+      headers: this.headers,
+    });
+    return checkResponse(res);
+  };
+
+  editUserData = async (newData) => {
+    const res = await fetch(`${this._baseUrl}users/me`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(newData),
+    });
+    return checkResponse(res);
+  };
+
+  setUserAvatar = async (link) => {
+    const res = await fetch(`${this._baseUrl}users/me/avatar`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(link),
+    });
+    checkResponse(res);
+  };
+
+  addCard = async (card) => {
+    const res = await fetch(`${this._baseUrl}cards`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(card),
+    });
+    return checkResponse(res);
+  };
+
+  setLike = async (cardId) => {
+    const res = await fetch(`${this._baseUrl}cards/${cardId}/likes`, {
+      method: "PUT",
+      headers: this.headers,
+    });
+    return checkResponse(res);
+  };
+
+  deleteLike = async (cardId) => {
+    const res = await fetch(`${this._baseUrl}cards/${cardId}/likes`, {
       method: "DELETE",
-      headers: this._headers,
-    }).then(checkResponse);
+      headers: this.headers,
+    });
+    return checkResponse(res);
+  };
+
+  toggleLike = async (cardId, isLiked) => {
+    const res = await fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+      method: `${!isLiked ? "DELETE" : "PUT"}`,
+      headers: this.headers,
+    });
+    return checkResponse(res);
+  };
+
+  deleteCard = async (id) => {
+    const res = await fetch(`${this._baseUrl}cards/${id}`, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+    return checkResponse(res);
+  };
 }
 
 const api = new Api({
-  address: "https://mesto.nomoreparties.co/v1/cohort-55/",
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-55/",
   headers: {
     authorization: "affe4fa5-c3d4-4b50-80fd-680043df80cf",
     "Content-Type": "application/json",

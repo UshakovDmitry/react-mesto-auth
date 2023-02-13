@@ -11,4 +11,4 @@ res.ok
   : Promise.reject(`Ошибка: ${res.status}`);
 
 
-  export const BASE_URL = 'https://auth.nomoreparties.co';
+  export const AUTH_URL = 'https://auth.nomoreparties.co';
