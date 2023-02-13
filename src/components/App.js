@@ -32,34 +32,27 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [isRegistrationStatus, setisRegistrationStatus] = useState(false);
-  const [authorizationEmail, setAuthorizationEmail] = useState("");
+  const [email, setEmail] = useState("");
 
   // EFFECTS
 
   React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`);
-      });
-  }, []);
+    if (isLoggedIn) {
+      const loadDefaultData = async () => {
+        try {
+          const [userInfo, defaultCards] = await api.loadDefaultData();
+          setCurrentUser({ ...userInfo });
+          setCards([...defaultCards]);
+        } catch (err) {
+          console.log(err, "Ошибка загрузки начальных данных.");
+        }
+      };
+      loadDefaultData();
+    }
+  }, [isLoggedIn]);
 
   React.useEffect(() => {
-    handleTokenCheck();
-  }, [navigate]);
-
-  React.useEffect(() => {
-    api
-      .getDefaultCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`);
-      });
+    checkToken();
   }, []);
 
   React.useEffect(() => {
@@ -68,7 +61,7 @@ export default function App() {
     }
   }, [isLoggedIn, navigate]);
 
-  //
+  
 
   const handleCardDelete = (cardID) => {
     console.log(cardID);
@@ -82,7 +75,7 @@ export default function App() {
       });
   };
 
-  //
+  
   const handleCardLike = (card) => {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api
@@ -113,7 +106,6 @@ export default function App() {
     api
       .setUserAvatar(newURL)
       .then((data) => {
-        // console.log(data);
         setCurrentUser(data);
         closeAllPopups();
       })
@@ -136,11 +128,14 @@ export default function App() {
 
   const handleEditAvatarClick = useCallback(() => setEditAvatarPopup(true), []);
 
-  const handleEditProfileClick = useCallback(() => setEditProfilePopup(true),[]);
+  const handleEditProfileClick = useCallback(
+    () => setEditProfilePopup(true),
+    []
+  );
 
   const handleAddPlaceClick = useCallback(() => setAddPlacePopup(true), []);
 
-  const handleCardClick = useCallback((card) => setSelectedCard(card));
+  const handleCardClick = useCallback((card) => setSelectedCard(card), []);
 
   // Функция закрытия всех попапов
 
@@ -152,7 +147,7 @@ export default function App() {
     setIsInfoTooltipOpen(false);
   };
 
-  //  REGISTER API CALL //
+  //________REGISTER______//
 
   const handleRegistration = (data) => {
     return auth
@@ -169,62 +164,45 @@ export default function App() {
       });
   };
 
-  //   LOGIN API CALL   //
+  //______LOGIN_______//
 
-  const handleAuthorization = (data) => {
-    return auth
-      .authorize(data)
-      .then((data) => {
+  const handleAuthorization = useCallback(async (data) => {
+    try {
+      const res = await auth.authorize(data);
+      if (res) {
+        localStorage.setItem("jwt", res.token);
+        await checkToken();
         setIsLoggedIn(true);
-        localStorage.setItem("jwt", data.token);
         navigate("/");
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsInfoTooltipOpen(true);
-      });
-  };
-
-  // console.log(localStorage.getItem('jwt'))
-
-  //    TOCKEN CHECK    //
-
-  const handleTokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
-    // console.log('токен', jwt);
-
-    if (!jwt) {
-      return;
+      }
+    } catch (err) {
+      console.log(err);
+      setIsInfoTooltipOpen(true);
     }
-    auth
-      .getContent(jwt)
-      .then((data) => {
-        // console.log('получаю контент',data);
-        setAuthorizationEmail(data.email);
-        setCurrentUser(data);
-        setIsLoggedIn(true);
-        navigate("/");
-        // console.log(data.email)
-      })
-      .catch((err) => console.log(err));
-    api
-      .getDefaultCards(jwt)
-      .then((defaultCards) => {
-        setCards(defaultCards);
-      })
-      .catch((err) => console.log(err));
-  };
+  });
 
-  //     SIGN OUT     //
+  //______CHECK TOKEN_______//
+
+  const checkToken = useCallback(async () => {
+    const jwt = localStorage.getItem("jwt");
+    try {
+      const user = await auth.getContent(jwt);
+      setEmail(user.data.email);
+      setIsLoggedIn(true);
+    } catch (err) {
+      console.log(err, "Ошибка проверки токена");
+    }
+  }, []);
+
+  //______SIGN OUT_______/
 
   const handleSignOut = () => {
     localStorage.removeItem("jwt");
     navigate("/sign-in");
     setIsLoggedIn(false);
     setCurrentUser({});
-    setAuthorizationEmail("");
+    setEmail("");
   };
-  // console.log(authorizationEmail)
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -232,7 +210,7 @@ export default function App() {
         <div className="page">
           <Header
             loggedIn={isLoggedIn}
-            userEmail={authorizationEmail}
+            userEmail={email}
             onSignOut={handleSignOut}
           />
 
@@ -273,31 +251,26 @@ export default function App() {
 
           <Footer />
         </div>
-
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
         />
-
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
         />
-
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
         />
-
         <InfoTooltip
           onClose={closeAllPopups}
           isOpen={isInfoTooltipOpen}
           isSuccess={isRegistrationStatus}
         />
-
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
     </CurrentUserContext.Provider>

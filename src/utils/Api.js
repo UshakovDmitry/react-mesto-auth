@@ -9,6 +9,8 @@ class Api {
     this._baseUrl = options.baseUrl;
   }
 
+ loadDefaultData = () => Promise.all([this.getUserInfo(), this.getDefaultCards()]);
+
   getUserInfo = async () => {
     const res = await fetch(`${this._baseUrl}users/me`, {
       method: "GET",
