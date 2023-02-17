@@ -1,29 +1,18 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PopupWithForm from "./PopupWithForm";
-import useCloseModal from "./hooks/useCloseModal";
-import useForm from "./hooks/useForm";
+import useCloseModal from "../hooks/useCloseModal";
+import useForm from "../hooks/useForm";
 
 const AddPlacePopup = (props) => {
   useCloseModal(props.isOpen, props.onClose);
 
-  // const [image, setImage] = React.useState("");
-  // const [description, setDescription] = React.useState("");
-
-  // const handleImageChange = (e) => {
-  //   setImage(e.target.value);
-  // };
-
   const { enteredValues, errors, handleChange, resetForm } = useForm();
 
-  // const handleDescriptionChange = (e) => {
-  //   setDescription(e.target.value);
-  // };
-
-  React.useEffect(() => {
+  useEffect(() => {
     resetForm();
   }, [resetForm, props.isOpen]);
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     props.onAddPlace({
       name: enteredValues.name,
@@ -52,7 +41,7 @@ const AddPlacePopup = (props) => {
             required
             onChange={handleChange}
           />
-          <span className="form__input-error form__input-error_place_name">
+          <span className="form__input-error">
             {errors.name}
           </span>
           <input
@@ -64,7 +53,7 @@ const AddPlacePopup = (props) => {
             required
             onChange={handleChange}
           />
-          <span className="form__input-error form__input-error_place_link">
+          <span className="form__input-error">
             {errors.link}
           </span>
         </>

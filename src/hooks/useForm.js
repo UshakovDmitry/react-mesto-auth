@@ -42,20 +42,9 @@ const useForm = () => {
 
 export default useForm;
 
-
-
-
-
-
-
-
-
-
-
 // // import { useEffect, useState } from "react";
 // import { useFormik } from "formik";
 // import * as Yup from "yup";
-
 
 // const useForm = (inputs, submitHandler) => {
 //   const [disabled, setDisabled] = useState(true);
@@ -85,7 +74,7 @@ export default useForm;
 //       email: Yup.string()
 //         .email("Введите корректный email")
 //         .required("Заполните это поле"),
-        
+
 //       password: Yup.string()
 //       .max(30, "Должно быть 30 символов или меньше")
 //         .min(4, "Должно быть 4 символа или больше")
@@ -97,7 +86,7 @@ export default useForm;
 //       console.log('cfkfv');
 //       setDisabled(true);
 //       return submitHandler(values);
-    
+
 //     }
 //   });
 

@@ -2,20 +2,17 @@ import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup.js";
-
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
-
 import ImagePopup from "./ImagePopup.js";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import "../index.css";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
-
 import api from "../utils/Api";
 import * as auth from "../utils/auth";
 
@@ -36,7 +33,7 @@ export default function App() {
 
   // EFFECTS
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isLoggedIn) {
       const loadDefaultData = async () => {
         try {
@@ -51,11 +48,11 @@ export default function App() {
     }
   }, [isLoggedIn]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     checkToken();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isLoggedIn) {
       navigate("/");
     }
@@ -101,7 +98,6 @@ export default function App() {
 
   const handleUpdateAvatar = (newURL) => {
     const jwt = localStorage.getItem("jwt");
-    // console.log(newURL)
     api
       .setUserAvatar(newURL, jwt)
       .then((data) => {
@@ -159,8 +155,8 @@ export default function App() {
       })
       .catch((err) => {
         console.log(err);
-        setisRegistrationStatus(true);
         setIsInfoTooltipOpen(true);
+        setisRegistrationStatus(false);
       });
   };
 
@@ -177,6 +173,7 @@ export default function App() {
       }
     } catch (err) {
       console.log(err);
+      setisRegistrationStatus(false);
       setIsInfoTooltipOpen(true);
     }
   });
@@ -210,6 +207,7 @@ export default function App() {
       <div className="root">
         <div className="page">
           <Header
+            // status={isRegistrationStatus}
             loggedIn={isLoggedIn}
             userEmail={email}
             onSignOut={handleSignOut}

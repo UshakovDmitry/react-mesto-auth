@@ -1,5 +1,4 @@
-// import Field from "./Field";
-import useForm from "./hooks/useForm";
+import useForm from "../hooks/useForm";
 
 const Login = (props) => {
   const { enteredValues, errors, handleChange } = useForm();
@@ -17,7 +16,6 @@ const Login = (props) => {
       <h2 className="auth__title">Вход</h2>
 
       <form className="form auth__form" onSubmit={handleSubmit} noValidate>
-
         <input
           className="auth__input"
           type="email"
@@ -27,7 +25,6 @@ const Login = (props) => {
           autoComplete="email"
           onChange={handleChange}
           value={enteredValues.email || ""}
-          // formik={formik}
           required
         />
 
@@ -42,13 +39,18 @@ const Login = (props) => {
           autoComplete="password"
           onChange={handleChange}
           value={enteredValues.password || ""}
-          // formik={formik}
           required
         />
-        
+
         <span className="auth__error">{errors.password}</span>
 
-        <button type="submit">Войти</button>
+        <button
+          // className={`${disabled ? }`}
+          type="submit"
+          disabled={Boolean(errors.email || errors.password)}
+        >
+          Войти
+        </button>
       </form>
     </div>
   );

@@ -18,13 +18,9 @@ export default function PopupWithForm(props) {
 
           {props.children}
 
-          <button
-            className="form__submit-button"
-            type="submit"
-            >
+          <button className="form__submit-button" type="submit">
             {props.buttonText ? props.buttonText : "Сохранить"}
-            </button>
-            
+          </button>
         </form>
 
         <button

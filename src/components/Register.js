@@ -1,15 +1,9 @@
 import { Link } from "react-router-dom";
-import useForm from "./hooks/useForm";
-// import Field from "./Field";
-
-
+import useForm from "../hooks/useForm";
 import React from "react";
-// import { Form } from "formik";
-
 
 const Register = (props) => {
   const { enteredValues, errors, handleChange } = useForm();
- 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,7 +18,6 @@ const Register = (props) => {
         <form
           className="form auth__form"
           onSubmit={handleSubmit}
-          // disabled={disabled}
         >
           <input
             id="email"
@@ -32,10 +25,8 @@ const Register = (props) => {
             type="email"
             placeholder="Email"
             autoComplete="email"
-            // formik={formik}
             onChange={handleChange}
             value={enteredValues.email || ""}
-            // errorClassName="auth__error"
             required
           />
 
@@ -47,16 +38,18 @@ const Register = (props) => {
             type="password"
             placeholder="Пароль"
             autoComplete="password"
-            // formik={formik}
-            // errorClassName="auth__error"
             value={enteredValues.password || ""}
             onChange={handleChange}
             required
           />
           <span className="auth__error">{errors.password}</span>
 
-          <button type="submit">Зарегистрироваться</button>
-          
+          <button
+            disabled={Boolean(errors.email || errors.password)}
+            type="submit"
+          >
+            Зарегистрироваться
+          </button>
         </form>
         <Link to="/sign-in" className="auth__login-hint">
           Уже зарегистрированы? Войти

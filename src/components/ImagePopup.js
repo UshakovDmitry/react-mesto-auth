@@ -1,11 +1,8 @@
 import React from "react";
-import useCloseModal from './hooks/useCloseModal'
-
+import useCloseModal from "../hooks/useCloseModal";
 
 function ImagePopup(props) {
-
-
-  useCloseModal(props.card.link , props.onClose)
+  useCloseModal(props.card.link, props.onClose);
 
   return (
     <div
