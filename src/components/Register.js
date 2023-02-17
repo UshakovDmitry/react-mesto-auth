@@ -2,11 +2,14 @@ import { Link } from "react-router-dom";
 import useForm from "./hooks/useForm";
 // import Field from "./Field";
 
+
 import React from "react";
 // import { Form } from "formik";
 
+
 const Register = (props) => {
   const { enteredValues, errors, handleChange } = useForm();
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();

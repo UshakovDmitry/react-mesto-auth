@@ -1,7 +1,11 @@
 import successIcon from '../images//successful-registration-icon.svg';
 import unsuccessIcon from '../images/registration-error-icon.svg';
+import useCloseModal from "./hooks/useCloseModal";
 
 const InfoTooltip = (props) => {
+  useCloseModal(props.isOpen, props.onClose);
+
+
     return (
       <div className={`popup ${props.isOpen ? 'popup_opened' : ''}`}>
         <div className="popup__container">
