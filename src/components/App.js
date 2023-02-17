@@ -61,8 +61,6 @@ export default function App() {
     }
   }, [isLoggedIn, navigate]);
 
-  
-
   const handleCardDelete = (cardID) => {
     console.log(cardID);
     api
@@ -75,7 +73,6 @@ export default function App() {
       });
   };
 
-  
   const handleCardLike = (card) => {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api
@@ -90,9 +87,9 @@ export default function App() {
       });
   };
 
-  const handleUpdateUser = (newUserInfo) => {
+  const handleUpdateUser = (UserData) => {
     api
-      .editUserData(newUserInfo)
+      .editUserData(UserData)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
@@ -103,8 +100,10 @@ export default function App() {
   };
 
   const handleUpdateAvatar = (newURL) => {
+    const jwt = localStorage.getItem("jwt");
+    // console.log(newURL)
     api
-      .setUserAvatar(newURL)
+      .setUserAvatar(newURL, jwt)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
@@ -150,6 +149,7 @@ export default function App() {
   //________REGISTER______//
 
   const handleRegistration = (data) => {
+    console.log(data);
     return auth
       .register(data)
       .then(() => {
@@ -188,6 +188,7 @@ export default function App() {
     try {
       const user = await auth.getContent(jwt);
       setEmail(user.data.email);
+      setCurrentUser(user);
       setIsLoggedIn(true);
     } catch (err) {
       console.log(err, "Ошибка проверки токена");
@@ -217,12 +218,12 @@ export default function App() {
           <Routes>
             <Route
               path="/sign-up"
-              element={<Register onRegister={handleRegistration} />}
+              element={<Register onSubmit={handleRegistration} />}
             />
 
             <Route
               path="/sign-in"
-              element={<Login onLogin={handleAuthorization} />}
+              element={<Login onSubmit={handleAuthorization} />}
             />
 
             <Route

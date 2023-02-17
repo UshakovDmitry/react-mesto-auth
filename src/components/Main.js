@@ -4,23 +4,24 @@ import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 // import { ApiCards } from "../Contexts/ApiCards";
 
 const Main = (props) => {
-  const dataUser = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
+  // const {name, avatar, about} = currentUser
 
   return (
     <main className="content">
       <section className="profile">
         <button className="profile__edit-avatar" onClick={props.onEditAvatar}>
-          <img className="profile__avatar" src={dataUser.avatar} alt="Аватар" />
+          <img className="profile__avatar" src={currentUser.avatar} alt="Аватар" />
         </button>
         <div className="profile__info">
-          <h1 className="profile__user-name">{dataUser.name}</h1>
+          <h1 className="profile__user-name">{currentUser.name}</h1>
           <button
             className="profile__edit-button"
             type="button"
             aria-label="Редактировать профиль"
             onClick={props.onEditProfile}
           ></button>
-          <p className="profile__user-info">{dataUser.about}</p>
+          <p className="profile__user-info">{currentUser.about}</p>
         </div>
         <button
           className="profile__button"

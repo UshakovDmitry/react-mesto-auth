@@ -1,40 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { CurrentUserContext } from "../Contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
-import useCloseModal from './hooks/useCloseModal'
+import useCloseModal from "./hooks/useCloseModal";
+import useForm from "./hooks/useForm";
+// import Field from "./Field";
 
 const EditProfilePopup = (props) => {
-  
-  useCloseModal(props.isOpen, props.onClose)
+  useCloseModal(props.isOpen, props.onClose);
 
+  const currentUser = useContext(CurrentUserContext);
+  // const { name, about } = useContext(CurrentUserContext);
 
+  const { enteredValues, errors, handleChange, resetForm } = useForm();
 
-  const currentUser = React.useContext(CurrentUserContext);
-
-  const [name, setName] = React.useState("");
-  const [description, setDescription] = React.useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
     props.onUpdateUser({
-      name: name,
-      about: description,
+      name: enteredValues.name,
+      about: enteredValues.about,
     });
   };
 
   useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser]);
-
-  const handleChangeName = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleChangeDescription = (e) => {
-    setDescription(e.target.value);
-  };
+    currentUser ? resetForm(currentUser) : resetForm();
+  }, [resetForm, props.isOpen, currentUser]);
 
   return (
     <PopupWithForm
@@ -43,35 +33,36 @@ const EditProfilePopup = (props) => {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
-      children={
-        <>
-          <input
-            className="form__input"
-            type="text"
-            placeholder="Имя"
-            name="name"
-            minLength="2"
-            maxLength="40"
-            value={name || ""}
-            onChange={handleChangeName}
-            required
-          />
-          <span className="form__input-error form__input-error_place_name"></span>
-          <input
-            className="form__input"
-            type="text"
-            placeholder="Должность"
-            name="about"
-            minLength="2"
-            maxLength="200"
-            value={description || ""}
-            onChange={handleChangeDescription}
-            required
-          />
-          <span className="form__input-error form__input-error_place_about"></span>
-        </>
-      }
-    />
+      // disabled={disabled}
+    >
+      <input
+        className="form__input"
+        type="text"
+        placeholder="Имя"
+        name="name"
+        minLength="2"
+        maxLength="40"
+        value={enteredValues.name || ""}
+        onChange={handleChange}
+        // formik={formik}
+      />
+
+      <span id="name-error" className="form__input-error">{errors.name}</span>
+
+      <input
+        className="form__input"
+        type="text"
+        minLength="2"
+        maxLength="200"
+        placeholder="Должность"
+        name="about"
+        value={enteredValues.about || ""}
+        onChange={handleChange}
+        // formik={formik}
+      />
+      <span id="name-error" className="form__input-error">{errors.name}</span>
+
+    </PopupWithForm>
   );
 };
 

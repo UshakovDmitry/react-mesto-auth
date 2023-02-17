@@ -36,13 +36,15 @@ class Api {
     return checkResponse(res);
   };
 
-  setUserAvatar = async (link) => {
+  setUserAvatar = async (link, jwt) => {
     const res = await fetch(`${this._baseUrl}users/me/avatar`, {
       method: "PATCH",
-      headers: this.headers,
-      body: JSON.stringify(link),
-    });
-    checkResponse(res);
+      headers: this.headers, 
+      'Authorization': `Bearer ${jwt}`,
+      body: JSON.stringify({
+        avatar: link.avatar,
+      })});
+       return checkResponse(res);
   };
 
   addCard = async (card) => {
